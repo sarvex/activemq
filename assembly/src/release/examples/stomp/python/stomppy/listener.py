@@ -36,23 +36,23 @@ class MyListener(object):
     self.start = time.time()
   
   def on_error(self, headers, message):
-    print('received an error %s' % message)
+    print(f'received an error {message}')
 
   def on_message(self, headers, message):
     if message == "SHUTDOWN":
-    
+
       diff = time.time() - self.start
       print("Received %s in %f seconds" % (self.count, diff))
       conn.disconnect()
       sys.exit(0)
-      
+
     else:
       if self.count==0:
         self.start = time.time()
-        
+
       self.count += 1
       if self.count % 1000 == 0:
-         print("Received %s messages." % self.count)
+        print(f"Received {self.count} messages.")
 
 conn = stomp.Connection(host_and_ports = [(host, port)])
 conn.set_listener('', MyListener(conn))
